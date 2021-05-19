@@ -18,6 +18,7 @@
 		6001711C2654682300EC4DA3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600171192654682300EC4DA3 /* Extensions.swift */; };
 		6001712426546F7300EC4DA3 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6001712326546F7300EC4DA3 /* HomeBottomControlsStackView.swift */; };
 		600171272654736E00EC4DA3 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600171262654736E00EC4DA3 /* TopNavigationStackView.swift */; };
+		6038E371265596D700446A7D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038E370265596D600446A7D /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		600171192654682300EC4DA3 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6001712326546F7300EC4DA3 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		600171262654736E00EC4DA3 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
+		6038E370265596D600446A7D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 			children = (
 				6001712326546F7300EC4DA3 /* HomeBottomControlsStackView.swift */,
 				600171262654736E00EC4DA3 /* TopNavigationStackView.swift */,
+				6038E370265596D600446A7D /* CardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				600171062654678D00EC4DA3 /* ViewController.swift in Sources */,
+				6038E371265596D700446A7D /* CardView.swift in Sources */,
 				6001712426546F7300EC4DA3 /* HomeBottomControlsStackView.swift in Sources */,
 				6001711C2654682300EC4DA3 /* Extensions.swift in Sources */,
 				600171272654736E00EC4DA3 /* TopNavigationStackView.swift in Sources */,
