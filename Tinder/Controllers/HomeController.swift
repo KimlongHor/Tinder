@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeController.swift
 //  Tinder
 //
 //  Created by horkimlong on 18/5/21.
@@ -7,11 +7,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class HomeController: UIViewController {
+    
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let buttonsStackView = HomeBottomControlsStackView()
+        
+    let cardViewModels: [CardViewModel] = {
+        let producers = [
+            User(name: "Kelly", age: 23, profession: "Music AJ", imageName: "lady5c"),
+            User(name: "Jane", age: 18, profession: "Teacher", imageName: "lady4c"),
+            Advertiser(title: "Slide Out Menu", brandName: "Advertisement", posterPhotoName: "slide_out_menu_poster")
+        ] as [ProducesCardViewModel]
+        
+        let viewModel = producers.map({return $0.toCardViewModel()})
+        return viewModel
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,9 +33,12 @@ class ViewController: UIViewController {
     // MARK:- Fileprivate
     
     fileprivate func setupDummyCards() {
-        let cardView = CardView()
-        cardsDeckView.addSubview(cardView)
-        cardView.fillSuperview()
+        cardViewModels.forEach { (cardVM) in
+            let cardView = CardView()
+            cardView.cardViewModel = cardVM
+            cardsDeckView.addSubview(cardView)
+            cardView.fillSuperview()
+        }
     }
     
     fileprivate func setupLayout() {
