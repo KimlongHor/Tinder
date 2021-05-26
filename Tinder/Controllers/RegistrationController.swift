@@ -17,6 +17,7 @@ class RegistrationController: UIViewController {
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 275).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 275).isActive = true
         button.layer.cornerRadius = 16
         return button
     }()
@@ -24,6 +25,7 @@ class RegistrationController: UIViewController {
     let fullNameTextField: CustomTextField = {
         let textfield = CustomTextField(padding: 16)
         textfield.placeholder = "Enter full name"
+        textfield.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         textfield.backgroundColor = .white
         return textfield
     }()
@@ -32,6 +34,7 @@ class RegistrationController: UIViewController {
         let textfield = CustomTextField(padding: 16)
         textfield.placeholder = "Enter email"
         textfield.keyboardType = .emailAddress
+        textfield.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         textfield.backgroundColor = .white
         return textfield
     }()
@@ -40,6 +43,7 @@ class RegistrationController: UIViewController {
         let textfield = CustomTextField(padding: 16)
         textfield.placeholder = "Enter password"
         textfield.isSecureTextEntry = true
+        textfield.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         textfield.backgroundColor = .white
         return textfield
     }()
@@ -47,13 +51,23 @@ class RegistrationController: UIViewController {
     let registerButton: UIButton = {
         let button = UIButton()
         button.setTitle("Register", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 0.8242503482, green: 0, blue: 0.2313725501, alpha: 1)
+        button.backgroundColor = .lightGray
+        button.setTitleColor(.darkGray, for: .disabled)
+        button.isEnabled = false
         button.layer.cornerRadius = 22
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return button
     }()
+    
+    let gradientLayer = CAGradientLayer()
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        print("okay")
+        // we call this func here because the gradientLayer will layout properly when the phone is in landscape.
+        gradientLayer.frame = view.bounds
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +76,7 @@ class RegistrationController: UIViewController {
         setupLayout()
         setupNotificationObservers()
         setupTapGesture()
+        setupRegistrationViewModelObserver()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,7 +85,44 @@ class RegistrationController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if self.traitCollection.verticalSizeClass == .compact {
+            overallStackView.axis = .horizontal
+        } else {
+            overallStackView.axis = .vertical
+        }
+    }
+    
+    // MARK:- textField
+    
+    @objc fileprivate func handleTextChange(textField: UITextField) {
+        if textField == fullNameTextField {
+            registrationViewModel.fullName = textField.text
+        } else if textField == emailTextField {
+            registrationViewModel.email = textField.text
+        } else {
+            registrationViewModel.password = textField.text
+        }
+    }
+    
     // MARK:- Private
+    
+    let registrationViewModel = RegistrationViewModel()
+    
+    fileprivate func setupRegistrationViewModelObserver() {
+        registrationViewModel.isFormValidObserver = { [unowned self] (isFormValid) in
+            
+            self.registerButton.isEnabled = isFormValid
+
+            if isFormValid {
+                self.registerButton.backgroundColor = #colorLiteral(red: 0.8242503482, green: 0, blue: 0.2313725501, alpha: 1)
+                self.registerButton.setTitleColor(.white, for: .normal)
+            } else {
+                self.registerButton.backgroundColor = .lightGray
+                self.registerButton.setTitleColor(.darkGray, for: .normal)
+            }
+        }
+    }
     
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDimiss)))
@@ -101,29 +153,35 @@ class RegistrationController: UIViewController {
         let keyboardFrame = value.cgRectValue
         
         // get how tall the gap is from the register button to the bottom of the screen
-        let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+        let bottomSpace = view.frame.height - overallStackView.frame.origin.y - overallStackView.frame.height
         let difference = keyboardFrame.height - bottomSpace
         
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
     }
     
-    lazy var stackView = VerticalStackView(arrangedSubviews: [
-        selectPhotoButton,
+    lazy var verticalStackView = VerticalStackView(arrangedSubviews: [
         fullNameTextField,
         emailTextField,
         passwordTextField,
         registerButton
     ], spacing: 8)
     
+    lazy var overallStackView = UIStackView(arrangedSubviews: [
+        selectPhotoButton,
+        verticalStackView
+    ])
+    
     fileprivate func setupLayout() {
-        view.addSubview(stackView)
-        stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
-        stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        view.addSubview(overallStackView)
+        verticalStackView.distribution = .fillEqually
+        overallStackView.axis = .vertical
+        overallStackView.spacing = 8
+        overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
+        overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     fileprivate func setupGradientLayer() {
         
-        let gradientLayer = CAGradientLayer()
         let topColor = #colorLiteral(red: 0.9921568627, green: 0.3568627451, blue: 0.3725490196, alpha: 1)
         let bottomColor = #colorLiteral(red: 0.8980392157, green: 0, blue: 0.4470588235, alpha: 1)
         
@@ -133,5 +191,4 @@ class RegistrationController: UIViewController {
         view.layer.addSublayer(gradientLayer)
         gradientLayer.frame = view.bounds
     }
-
 }
