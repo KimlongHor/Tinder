@@ -36,7 +36,6 @@ class CardViewModel {
     
     func advanceToNextPhoto() {
         imageIndex = min(imageIndex + 1, imageNames.count - 1)
-        
     }
     
     func goToPrevious() {

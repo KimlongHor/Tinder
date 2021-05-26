@@ -6,6 +6,21 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+//        registrationViewModel.image = image
+        registrationViewModel.bindableImage.value = image
+        dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+}
 
 class RegistrationController: UIViewController {
     
@@ -19,8 +34,18 @@ class RegistrationController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 275).isActive = true
         button.widthAnchor.constraint(equalToConstant: 275).isActive = true
         button.layer.cornerRadius = 16
+        button.imageView?.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         return button
     }()
+    
+    @objc fileprivate func handleSelectPhoto() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.modalPresentationStyle = .fullScreen
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true)
+    }
     
     let fullNameTextField: CustomTextField = {
         let textfield = CustomTextField(padding: 16)
@@ -42,7 +67,7 @@ class RegistrationController: UIViewController {
     let passwordTextField: CustomTextField = {
         let textfield = CustomTextField(padding: 16)
         textfield.placeholder = "Enter password"
-        textfield.isSecureTextEntry = true
+//        textfield.isSecureTextEntry = true
         textfield.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         textfield.backgroundColor = .white
         return textfield
@@ -57,9 +82,10 @@ class RegistrationController: UIViewController {
         button.isEnabled = false
         button.layer.cornerRadius = 22
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         return button
     }()
-    
+
     let gradientLayer = CAGradientLayer()
     
     override func viewWillLayoutSubviews() {
@@ -107,6 +133,30 @@ class RegistrationController: UIViewController {
     
     // MARK:- Private
     
+    @objc fileprivate func handleRegister() {
+        self.handleTapDimiss()
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+            if let error = error {
+                print(error)
+                self.showHUDWithError(error: error)
+                return
+            }
+            
+            print("Successfully registered", result?.user.uid ?? "")
+        }
+    }
+    
+    fileprivate func showHUDWithError(error: Error) {
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Failed registration"
+        hud.detailTextLabel.text = error.localizedDescription
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 4)
+    }
+    
     let registrationViewModel = RegistrationViewModel()
     
     fileprivate func setupRegistrationViewModelObserver() {
@@ -121,6 +171,10 @@ class RegistrationController: UIViewController {
                 self.registerButton.backgroundColor = .lightGray
                 self.registerButton.setTitleColor(.darkGray, for: .normal)
             }
+        }
+        
+        registrationViewModel.bindableImage.bind { [unowned self] (image) in
+            self.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     
