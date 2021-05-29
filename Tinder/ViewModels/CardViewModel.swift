@@ -25,14 +25,13 @@ class CardViewModel {
     
     fileprivate var imageIndex = 0 {
         didSet {
-            let imageName = imageNames[imageIndex]
-            let image = UIImage(named: imageName)
-            imageIndexObserver?(imageIndex, image)
+            let imageUrl = imageNames[imageIndex]
+            imageIndexObserver?(imageIndex, imageUrl)
         }
     }
     
     // Reactive Programming: we want to expose a property in CardViewModel obj such that we can notify an external class about the changes inside the view state. In this case, we want to let the external class know that imageIndex is changed.
-    var imageIndexObserver: ((Int, UIImage?) -> ())?
+    var imageIndexObserver: ((Int, String?) -> ())?
     
     func advanceToNextPhoto() {
         imageIndex = min(imageIndex + 1, imageNames.count - 1)
