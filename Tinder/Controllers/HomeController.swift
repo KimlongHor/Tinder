@@ -70,9 +70,10 @@ class HomeController: UIViewController {
     }
     
     @objc fileprivate func handleSettings() {
-        let registrationController = RegistrationController()
-        registrationController.modalPresentationStyle = .fullScreen
-        present(registrationController, animated: true)
+        let settingsController = SettingsController()
+        let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
     }
     
     fileprivate func setupFirestoreUserCards() {

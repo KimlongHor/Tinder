@@ -12,7 +12,6 @@ import JGProgressHUD
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
-//        registrationViewModel.image = image
         registrationViewModel.bindableImage.value = image
         dismiss(animated: true)
     }
