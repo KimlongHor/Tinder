@@ -32,6 +32,9 @@ class SettingsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        // this will allow the textfield in the tableviewCell to be editable
+        contentView.isUserInteractionEnabled = true
+        
         addSubview(textField)
         textField.fillSuperview()
     }
