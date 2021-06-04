@@ -105,10 +105,6 @@ class SettingsController: UITableViewController {
                 self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }
-        
-    
-            
-        
     }
     
     @objc fileprivate func handleCancel() {
@@ -160,7 +156,7 @@ class SettingsController: UITableViewController {
         }
         
         let headerLabel = HeaderLabel()
-        headerLabel.font = .boldSystemFont(ofSize: 20)
+        headerLabel.font = .boldSystemFont(ofSize: 16)
         
         switch section {
         case 1:
@@ -169,8 +165,10 @@ class SettingsController: UITableViewController {
             headerLabel.text = "Profession"
         case 3:
             headerLabel.text = "Age"
-        default:
+        case 4:
             headerLabel.text = "Bio"
+        default:
+            headerLabel.text = "Seeking Age Range"
         }
         
         return headerLabel
@@ -184,7 +182,7 @@ class SettingsController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -194,7 +192,26 @@ class SettingsController: UITableViewController {
         return 1
     }
     
+    @objc fileprivate func handleMinAgeChange(slider: UISlider) {
+        let indexPath = IndexPath(row: 0, section: 5)
+        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeCell
+        ageRangeCell.minLabel.text = "Min: \(Int(slider.value))"
+    }
+    
+    @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
+        let indexPath = IndexPath(row: 0, section: 5)
+        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeCell
+        ageRangeCell.maxLabel.text = "Max: \(Int(slider.value))"
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 5 {
+            let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
+            ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
+            ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
+            return ageRangeCell
+        }
+        
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
         switch indexPath.section {
