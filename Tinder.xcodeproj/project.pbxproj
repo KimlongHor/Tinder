@@ -26,6 +26,7 @@
 		603EC615265F085600B40965 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 603EC614265F085600B40965 /* GoogleService-Info.plist */; };
 		603EC618265F10BA00B40965 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603EC617265F10BA00B40965 /* Bindable.swift */; };
 		604731102666081A00B02C22 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6047310F2666081A00B02C22 /* SettingsController.swift */; };
+		6052F006266ACDE1007782E3 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6052F005266ACDE1007782E3 /* Firebase+Utils.swift */; };
 		6066EA792656377800C18F98 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6066EA782656377800C18F98 /* User.swift */; };
 		6090F7B226571308009159C9 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090F7B126571308009159C9 /* Advertiser.swift */; };
 		60C833652656E5CE004740B1 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C833642656E5CE004740B1 /* CardViewModel.swift */; };
@@ -54,6 +55,7 @@
 		603EC614265F085600B40965 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		603EC617265F10BA00B40965 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		6047310F2666081A00B02C22 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		6052F005266ACDE1007782E3 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
 		6066EA782656377800C18F98 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6090F7B126571308009159C9 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		60C833642656E5CE004740B1 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				600171192654682300EC4DA3 /* Extensions.swift */,
 				600171182654682300EC4DA3 /* UIView+Layout.swift */,
 				600171172654682300EC4DA3 /* VerticalStackView.swift */,
+				6052F005266ACDE1007782E3 /* Firebase+Utils.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6052F006266ACDE1007782E3 /* Firebase+Utils.swift in Sources */,
 				603A3050265C36850070C000 /* CustomTextField.swift in Sources */,
 				60C833652656E5CE004740B1 /* CardViewModel.swift in Sources */,
 				6033C21926675F0300B4068B /* SettingsCell.swift in Sources */,

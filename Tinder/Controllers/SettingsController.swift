@@ -10,7 +10,13 @@ import Firebase
 import JGProgressHUD
 import SDWebImage
 
+protocol SettingsControllerDelegate {
+    func didSaveSettings()
+}
+
 class SettingsController: UITableViewController {
+    
+    var delegate: SettingsControllerDelegate?
     
     // Instance properties
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
@@ -56,7 +62,6 @@ class SettingsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavigationItems()
         
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
@@ -64,27 +69,23 @@ class SettingsController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
         
-        fetchCurrentUser()
+        
     }
     
     var user: User?
     
     fileprivate func fetchCurrentUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
+        Firestore.firestore().fetchCurrentUser { (user, error) in
             if let error = error {
-                print(error)
+                print("Failed fetching current user: ", error)
                 return
             }
-            
-            // fetched our user here
-            guard let dictionary = snapshot?.data() else { return }
-            self.user = User(dictionary: dictionary)
+            self.user = user
             self.loadUserPhotos()
-            
             self.tableView.reloadData()
         }
     }
+    
     
     fileprivate func loadUserPhotos() {
         if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
@@ -137,6 +138,9 @@ class SettingsController: UITableViewController {
             }
             
             print("Finished saving user info")
+            self.dismiss(animated: true) {
+                self.delegate?.didSaveSettings()
+            }
         }
     }
     
