@@ -9,6 +9,12 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+extension HomeController: LoginControllerDelegate {
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
+    }
+}
+
 class HomeController: UIViewController, SettingsControllerDelegate {
     
     let topStackView = TopNavigationStackView()
@@ -27,9 +33,18 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         setupLayout()
         
         fetchCurrentUser()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
         
-//        setupFirestoreUserCards()
-//        fetchUserFromFirestore()
+        if Auth.auth().currentUser == nil {
+            let loginController = LoginController()
+            loginController.delegate = self
+            let navController = UINavigationController(rootViewController: loginController)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true)
+        }
     }
     
     fileprivate var user: User?

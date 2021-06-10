@@ -63,13 +63,12 @@ class SettingsController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationItems()
+        fetchCurrentUser()
         
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         // This is to get rid of tableView lines
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
-        
-        
     }
     
     var user: User?
@@ -150,8 +149,13 @@ class SettingsController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel))
+            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         ]
+    }
+    
+    @objc fileprivate func handleLogout() {
+        try? Auth.auth().signOut()
+        dismiss(animated: true)
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
