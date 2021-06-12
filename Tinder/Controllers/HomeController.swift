@@ -9,6 +9,14 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+extension HomeController: CardViewDelegate {
+    func didTapMoreInfo() {
+        let userDetailsController = UserDetailsController()
+        userDetailsController.modalPresentationStyle = .fullScreen
+        present(userDetailsController, animated: true)
+    }
+}
+
 extension HomeController: LoginControllerDelegate {
     func didFinishLoggingIn() {
         fetchCurrentUser()
@@ -28,6 +36,8 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         super.viewDidLoad()
         
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+        
+        
         
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         setupLayout()
@@ -86,9 +96,11 @@ class HomeController: UIViewController, SettingsControllerDelegate {
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
-                self.cardViewModels.append(user.toCardViewModel())
-                self.lastFetchedUser = user
-                self.setupCardFromUser(user: user)
+                if user.uid != Auth.auth().currentUser?.uid {
+                    self.setupCardFromUser(user: user)
+                }
+//                self.cardViewModels.append(user.toCardViewModel())
+//                self.lastFetchedUser = user
             })
         }
     }
@@ -96,6 +108,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     fileprivate func setupCardFromUser(user: User) {
         let cardView = CardView(frame: .zero)
         cardView.cardViewModel = user.toCardViewModel()
+        cardView.delegate = self
         cardsDeckView.addSubview(cardView)
         
         // Prevent the card from flashing

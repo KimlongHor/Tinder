@@ -8,7 +8,13 @@
 import UIKit
 import SDWebImage
 
+protocol CardViewDelegate {
+    func didTapMoreInfo()
+}
+
 class CardView: UIView {
+    
+    var delegate: CardViewDelegate?
     
     var cardViewModel: CardViewModel? {
         didSet {
@@ -31,6 +37,12 @@ class CardView: UIView {
             setupImageIndexObserver()
         }
     }
+    
+    let moreInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "info_icon").withRenderingMode(.alwaysOriginal), for: .normal)
+        return button
+    }()
     
     fileprivate func setupImageIndexObserver() {
         cardViewModel?.imageIndexObserver = {[weak self] (index, imageUrl) in
@@ -61,6 +73,8 @@ class CardView: UIView {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+        moreInfoButton.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
+        
     }
     
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
@@ -94,6 +108,10 @@ class CardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc fileprivate func handleMoreInfo() {
+        delegate?.didTapMoreInfo()
+    }
+    
     fileprivate func setupLayout() {
         layer.cornerRadius = 10
         clipsToBounds = true
@@ -112,6 +130,9 @@ class CardView: UIView {
         informationLabel.textColor = .white
         informationLabel.font = UIFont.systemFont(ofSize: 34, weight: .heavy)
         informationLabel.numberOfLines = 0
+        
+        addSubview(moreInfoButton)
+        moreInfoButton.anchor(top: nil, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 16), size: .init(width: 44, height: 44))
     }
     
     fileprivate func handleChangedState(_ gesture: UIPanGestureRecognizer) {
