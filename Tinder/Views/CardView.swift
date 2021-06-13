@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 protocol CardViewDelegate {
-    func didTapMoreInfo()
+    func didTapMoreInfo(cardViewModel: CardViewModel)
 }
 
 class CardView: UIView {
@@ -109,7 +109,8 @@ class CardView: UIView {
     }
     
     @objc fileprivate func handleMoreInfo() {
-        delegate?.didTapMoreInfo()
+        guard let cardViewModel = cardViewModel else { return }
+        delegate?.didTapMoreInfo(cardViewModel: cardViewModel)
     }
     
     fileprivate func setupLayout() {
