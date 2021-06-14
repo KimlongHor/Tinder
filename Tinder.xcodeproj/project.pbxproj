@@ -32,6 +32,7 @@
 		6098EFF42672746E009D5AED /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098EFF32672746E009D5AED /* LoginController.swift */; };
 		6098EFFA267274B1009D5AED /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098EFF9267274B1009D5AED /* LoginViewModel.swift */; };
 		60C833652656E5CE004740B1 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C833642656E5CE004740B1 /* CardViewModel.swift */; };
+		60CB47732677C960003BFDED /* SwipingPhotosControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CB47722677C960003BFDED /* SwipingPhotosControllerViewController.swift */; };
 		60D305DC265D84C60079F27A /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D305DB265D84C60079F27A /* RegistrationViewModel.swift */; };
 		60D96A1C26752120008F37CC /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D96A1B26752120008F37CC /* UserDetailsController.swift */; };
 		60EC32C426695C6100522E9B /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EC32C326695C6100522E9B /* AgeRangeCell.swift */; };
@@ -64,6 +65,7 @@
 		6098EFF32672746E009D5AED /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		6098EFF9267274B1009D5AED /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		60C833642656E5CE004740B1 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		60CB47722677C960003BFDED /* SwipingPhotosControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingPhotosControllerViewController.swift; sourceTree = "<group>"; };
 		60D305DB265D84C60079F27A /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		60D96A1B26752120008F37CC /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		60EC32C326695C6100522E9B /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				60D96A1B26752120008F37CC /* UserDetailsController.swift */,
+				60CB47722677C960003BFDED /* SwipingPhotosControllerViewController.swift */,
 			);
 			path = "User Details";
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				600171022654678D00EC4DA3 /* AppDelegate.swift in Sources */,
 				6090F7B226571308009159C9 /* Advertiser.swift in Sources */,
 				6098EFF42672746E009D5AED /* LoginController.swift in Sources */,
+				60CB47732677C960003BFDED /* SwipingPhotosControllerViewController.swift in Sources */,
 				60D96A1C26752120008F37CC /* UserDetailsController.swift in Sources */,
 				603EC618265F10BA00B40965 /* Bindable.swift in Sources */,
 				60D305DC265D84C60079F27A /* RegistrationViewModel.swift in Sources */,

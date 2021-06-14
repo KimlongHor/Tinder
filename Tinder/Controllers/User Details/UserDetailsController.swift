@@ -18,12 +18,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return sv
     }()
     
-    let imageView: UIImageView = {
-        let iv = UIImageView(image: #imageLiteral(resourceName: "lady5c"))
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        return iv
-    }()
+    let swipingPhotosController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     
     let infoLabel: UILabel = {
         let label = UILabel()
@@ -50,9 +45,7 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     var cardViewModel: CardViewModel? {
         didSet {
             infoLabel.attributedText = cardViewModel?.attributedString
-            
-            guard let firstImageUrl = cardViewModel?.imageNames.first, let url = URL(string: firstImageUrl) else { return }
-            imageView.sd_setImage(with: url, completed: nil)
+            swipingPhotosController.cardViewModel = cardViewModel
         }
     }
 
@@ -81,23 +74,29 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         visualEffectView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
     }
     
+    fileprivate let extraSwipingHeight: CGFloat = 80
+    
     fileprivate func setupLayout() {
         view.backgroundColor = .white
         
         view.addSubview(scrollView)
         scrollView.fillSuperview()
         
-        scrollView.addSubview(imageView)
-        
-        // We use frame instead of auto layout because
-        let length = view.frame.width
-        imageView.frame = CGRect(x: 0, y: 0, width: length, height: length)
+        let swipingView = swipingPhotosController.view!
+        scrollView.addSubview(swipingView)
         
         scrollView.addSubview(infoLabel)
-        infoLabel.anchor(top: imageView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
+        infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 0, right: 16))
         
         scrollView.addSubview(dismissButton)
-        dismissButton.anchor(top: imageView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 0, bottom: 0, right: 24), size: .init(width: 50, height: 50))
+        dismissButton.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: -25, left: 0, bottom: 0, right: 24), size: .init(width: 50, height: 50))
+    }
+    
+    override func viewWillLayoutSubviews() {
+        let swipingView = swipingPhotosController.view!
+        // The code is here instead of viewDidLoad because in viewDidLoad, the scrollView does not know the exact frame of the phone screen yet, which results in laying out the view wrongly.
+        let length = view.frame.width
+        swipingView.frame = CGRect(x: 0, y: 0, width: length, height: length + extraSwipingHeight)
     }
     
     
@@ -106,7 +105,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
 
         var width = view.frame.width + changeY * 2
         width = max(view.frame.width, width)
-        imageView.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width, height: width)
+        
+        let imageView = swipingPhotosController.view!
+        imageView.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width, height: width + extraSwipingHeight)
     }
     
     @objc fileprivate func handleTapDismiss() {

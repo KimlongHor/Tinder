@@ -19,6 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window?.makeKeyAndVisible()
         window?.rootViewController = HomeController()
+//        window?.rootViewController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        
         
         guard let _ = (scene as? UIWindowScene) else { return }
     }
