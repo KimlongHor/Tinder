@@ -156,7 +156,9 @@ class LoginController: UIViewController {
     }
     
     @objc fileprivate func handleGoBack() {
-        navigationController?.dismiss(animated: true, completion: nil)
+        let registrationController = RegistrationController()
+        registrationController.modalPresentationStyle = .fullScreen
+        present(registrationController, animated: true, completion: nil)
     }
     
     @objc fileprivate func handleLogin() {
@@ -169,7 +171,6 @@ class LoginController: UIViewController {
             self.dismiss(animated: true) {
                 self.delegate?.didFinishLoggingIn()
             }
-            
         }
     }
 }

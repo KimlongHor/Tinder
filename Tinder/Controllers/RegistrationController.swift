@@ -13,6 +13,7 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
         registrationViewModel.bindableImage.value = image
+        registrationViewModel.checkFormValidity()
         dismiss(animated: true)
     }
     
@@ -151,6 +152,7 @@ class RegistrationController: UIViewController {
         }
     }
     
+    
     fileprivate func showHUDWithError(error: Error) {
         registeringHUD.dismiss()
         let hud = JGProgressHUD(style: .dark)
@@ -224,8 +226,7 @@ class RegistrationController: UIViewController {
     }
     
     @objc fileprivate func handleGoToLogin() {
-        let loginController = LoginController()
-        navigationController?.pushViewController(loginController, animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
     
     lazy var verticalStackView = VerticalStackView(arrangedSubviews: [

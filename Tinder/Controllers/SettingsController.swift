@@ -23,6 +23,9 @@ class SettingsController: UITableViewController {
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
     
+    static let defaultMinSeekingAge = 18
+    static let defaultMaxSeekingAge = 50
+    
     lazy var header: UIView = {
         let header = UIView()
         
@@ -227,11 +230,14 @@ class SettingsController: UITableViewController {
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
             
-            ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? -1)
-            ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
+            let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
+            let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
             
-            ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? -1)"
-            ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? -1)"
+            ageRangeCell.minSlider.value = Float(minAge)
+            ageRangeCell.maxSlider.value = Float(maxAge)
+            
+            ageRangeCell.minLabel.text = "Min: \(minAge)"
+            ageRangeCell.maxLabel.text = "Max: \(maxAge)"
             return ageRangeCell
         }
         
