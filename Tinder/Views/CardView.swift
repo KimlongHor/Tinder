@@ -19,11 +19,7 @@ class CardView: UIView {
     var cardViewModel: CardViewModel? {
         didSet {
             guard let cardViewModel = cardViewModel else {return}
-            let imageName = cardViewModel.imageUrls.first ?? ""
-            if let url = URL(string: imageName) {
-//                imageView.sd_setImage(with: url)
-                imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "top_left_profile"), options: .continueInBackground)
-            }
+            swipingPhotosController.cardViewModel = self.cardViewModel
             
             informationLabel.attributedText = cardViewModel.attributedString
             informationLabel.textAlignment = cardViewModel.textAlignment
@@ -47,9 +43,6 @@ class CardView: UIView {
     
     fileprivate func setupImageIndexObserver() {
         cardViewModel?.imageIndexObserver = {[weak self] (index, imageUrl) in
-            if let url = URL(string: imageUrl ?? "") {
-                self?.imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "top_left_profile"), options: .continueInBackground)
-            }
             
             self?.barsStackView.arrangedSubviews.forEach { (v) in
                 v.backgroundColor = self?.barDeselectedColor
@@ -58,7 +51,8 @@ class CardView: UIView {
         }
     }
     
-    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "lady5c"))
+//    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "lady5c"))
+    fileprivate let swipingPhotosController = SwipingPhotosController(isCardViewMode: true)
     let gradientLayer = CAGradientLayer()
     fileprivate let informationLabel = UILabel()
     
@@ -118,11 +112,10 @@ class CardView: UIView {
         layer.cornerRadius = 10
         clipsToBounds = true
         
-        imageView.contentMode = .scaleAspectFill
-        addSubview(imageView)
-        imageView.fillSuperview()
+        let swipingPhotoView = swipingPhotosController.view!
         
-        setupBarsStackView()
+        addSubview(swipingPhotoView)
+        swipingPhotoView.fillSuperview()
         
         // add a gradient layer
         setupGradientLayer()
