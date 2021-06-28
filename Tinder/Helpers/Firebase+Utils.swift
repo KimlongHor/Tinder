@@ -6,6 +6,8 @@
 //
 
 import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 extension Firestore {
     func fetchCurrentUser(completion: @escaping (User?, Error?)->()) {

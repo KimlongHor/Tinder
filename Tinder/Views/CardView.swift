@@ -155,20 +155,20 @@ class CardView: UIView {
         
         
         
-//        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
-//            if shouldDismissCard {
-//                self.center = CGPoint(x: 600 * draggingDirection, y: 0)
-//            } else {
-//                self.transform = .identity
-//            }
-//        }, completion: {_ in
-//            self.transform = .identity
-//            if shouldDismissCard {
-//                self.removeFromSuperview()
-//
-//                self.delegate?.didRemoveCard(cardView: self)
-//            }
-//        })
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
+            if shouldDismissCard {
+                self.center = CGPoint(x: 600 * draggingDirection, y: 0)
+            } else {
+                self.transform = .identity
+            }
+        }, completion: {_ in
+            self.transform = .identity
+            if shouldDismissCard {
+                self.removeFromSuperview()
+
+                self.delegate?.didRemoveCard(cardView: self)
+            }
+        })
     }
     
     fileprivate func setupGradientLayer() {

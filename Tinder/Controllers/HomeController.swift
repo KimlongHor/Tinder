@@ -8,6 +8,8 @@
 import UIKit
 import Firebase
 import JGProgressHUD
+import FirebaseAuth
+import FirebaseFirestore
 
 extension HomeController: CardViewDelegate {
     func didRemoveCard(cardView: CardView) {
@@ -41,12 +43,15 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = true
+        
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         
         
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
         setupLayout()
         
         fetchCurrentUser()
@@ -138,6 +143,11 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     @objc fileprivate func handleLike() {
         saveSwipeToFirestore(didLike: 1)
         performSwipeAnimation(translation: 700, angle: 15)
+    }
+    
+    @objc fileprivate func handleMessages() {
+        let matchesMessagesController = MatchesMessagesController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(matchesMessagesController, animated: true)
     }
     
     fileprivate func saveSwipeToFirestore(didLike: Int) {

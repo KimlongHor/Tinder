@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class MatchView: UIView {
     
@@ -32,8 +33,11 @@ class MatchView: UIView {
                 self.currentUserImageView.sd_setImage(with: currentUserImageUrl) { (_, _, _, _) in
                     self.setupAnimations()
                 }
+                
+                guard let userName = user.name else { return }
+                self.descriptionLabel.text = "You and \(userName) have liked\neach other"
+                
             }
-            
         }
     }
     
@@ -88,7 +92,7 @@ class MatchView: UIView {
         super.init(frame: frame)
         setupBlurView()
         setupLayout()
-        setupAnimations()
+        //setupAnimations()
     }
     
     lazy var views = [

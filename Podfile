@@ -13,5 +13,6 @@ pod 'Firebase/Storage'
 pod 'Firebase/Core'
 pod 'JGProgressHUD'
 pod 'SDWebImage', '~> 5.0'
+pod 'LBTATools'
 
 end

@@ -328,6 +328,7 @@ PODS:
   - gRPC-Core/Interface (1.28.2)
   - GTMSessionFetcher/Core (1.4.0)
   - JGProgressHUD (2.2)
+  - LBTATools (1.0.12)
   - leveldb-library (1.22)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
@@ -345,6 +346,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
   - JGProgressHUD
+  - LBTATools
   - SDWebImage (~> 5.0)
 
 SPEC REPOS:
@@ -366,6 +368,7 @@ SPEC REPOS:
     - gRPC-Core
     - GTMSessionFetcher
     - JGProgressHUD
+    - LBTATools
     - leveldb-library
     - nanopb
     - PromisesObjC
@@ -389,11 +392,12 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   JGProgressHUD: d83d7a981b85d11205e19ff8ad5bb9c40571c847
+  LBTATools: 389a901a01b9a56bea5682c40cd6e23530f40015
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   SDWebImage: 9169792e9eec3e45bba2a0c02f74bf8bd922d1ee
 
-PODFILE CHECKSUM: 0bf33e9fc33a8a0db87e524d5904fcc76ad575f8
+PODFILE CHECKSUM: 59152843bd9ac8870e85ad025fb003e1cec966b7
 
 COCOAPODS: 1.8.4
