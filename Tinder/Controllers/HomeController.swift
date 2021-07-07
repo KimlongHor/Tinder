@@ -32,7 +32,6 @@ extension HomeController: LoginControllerDelegate {
 }
 
 class HomeController: UIViewController, SettingsControllerDelegate {
-    
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
@@ -146,7 +145,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     }
     
     @objc fileprivate func handleMessages() {
-        let matchesMessagesController = MatchesMessagesController(collectionViewLayout: UICollectionViewFlowLayout())
+        let matchesMessagesController = MatchesMessagesController()
         navigationController?.pushViewController(matchesMessagesController, animated: true)
     }
     
@@ -205,6 +204,26 @@ class HomeController: UIViewController, SettingsControllerDelegate {
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
                 self.presentMatchView(cardUid: cardUid)
+                
+                guard let cardUser = self.users[cardUid] else { return }
+                
+                let data = ["name": cardUser.name ?? "", "profileImageUrl": cardUser.imageUrl1 ?? "", "uid": cardUid, "timestamp": Timestamp(date: Date())] as [String : Any]
+                
+                Firestore.firestore().collection("matches_messages").document(uid).collection("matches").document(cardUid).setData(data) { (error) in
+                    if let error = error {
+                        print("Failed to save match info:", error)
+                    }
+                }
+                
+                guard let currentUser = self.user else { return }
+                
+                let otherMatchData = ["name": currentUser.name ?? "", "profileImageUrl": currentUser.imageUrl1 ?? "", "uid": cardUid, "timestamp": Timestamp(date: Date())] as [String : Any]
+                
+                Firestore.firestore().collection("matches_messages").document(cardUid).collection("matches").document(uid).setData(otherMatchData) { (error) in
+                    if let error = error {
+                        print("Failed to save match info:", error)
+                    }
+                }
             }
         }
     }
@@ -227,7 +246,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
         let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
         
-        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
+        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge).limit(to: 10)
         
         topCardView = nil
         
@@ -243,6 +262,8 @@ class HomeController: UIViewController, SettingsControllerDelegate {
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
+                
+                self.users[user.uid ?? ""] = user
                 
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
                 
@@ -263,6 +284,8 @@ class HomeController: UIViewController, SettingsControllerDelegate {
             })
         }
     }
+    
+    var users = [String: User]()
     
     fileprivate func setupCardFromUser(user: User) -> CardView{
         let cardView = CardView(frame: .zero)
@@ -287,6 +310,10 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     
     func didSaveSettings() {
         fetchCurrentUser()
+    }
+    
+    func didLogout() {
+        cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
     }
     
     fileprivate func setupFirestoreUserCards() {

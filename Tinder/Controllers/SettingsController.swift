@@ -9,9 +9,12 @@ import UIKit
 import Firebase
 import JGProgressHUD
 import SDWebImage
+import FirebaseAuth
+import FirebaseFirestore
 
 protocol SettingsControllerDelegate {
     func didSaveSettings()
+    func didLogout()
 }
 
 class SettingsController: UITableViewController {
@@ -158,6 +161,7 @@ class SettingsController: UITableViewController {
     
     @objc fileprivate func handleLogout() {
         try? Auth.auth().signOut()
+        delegate?.didLogout()
         dismiss(animated: true)
     }
     

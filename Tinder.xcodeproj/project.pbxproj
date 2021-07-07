@@ -32,6 +32,7 @@
 		607E88432683E82300B45599 /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607E88422683E82300B45599 /* SendMessageButton.swift */; };
 		607E88462683ED3A00B45599 /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607E88452683ED3900B45599 /* KeepSwipingButton.swift */; };
 		608220EC268A74D60084F8B4 /* MatchesMessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608220EB268A74D60084F8B4 /* MatchesMessagesController.swift */; };
+		608220EF268A8DE60084F8B4 /* MatchesNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608220EE268A8DE60084F8B4 /* MatchesNavBar.swift */; };
 		6090F7B226571308009159C9 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6090F7B126571308009159C9 /* Advertiser.swift */; };
 		6098EFF42672746E009D5AED /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098EFF32672746E009D5AED /* LoginController.swift */; };
 		6098EFFA267274B1009D5AED /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098EFF9267274B1009D5AED /* LoginViewModel.swift */; };
@@ -69,6 +70,7 @@
 		607E88422683E82300B45599 /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		607E88452683ED3900B45599 /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		608220EB268A74D60084F8B4 /* MatchesMessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesMessagesController.swift; sourceTree = "<group>"; };
+		608220EE268A8DE60084F8B4 /* MatchesNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesNavBar.swift; sourceTree = "<group>"; };
 		6090F7B126571308009159C9 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		6098EFF32672746E009D5AED /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		6098EFF9267274B1009D5AED /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				607E883F2683D2E200B45599 /* MatchView.swift */,
 				607E88422683E82300B45599 /* SendMessageButton.swift */,
 				607E88452683ED3900B45599 /* KeepSwipingButton.swift */,
+				608220EE268A8DE60084F8B4 /* MatchesNavBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				6033C21926675F0300B4068B /* SettingsCell.swift in Sources */,
 				600171062654678D00EC4DA3 /* HomeController.swift in Sources */,
 				607E88402683D2E200B45599 /* MatchView.swift in Sources */,
+				608220EF268A8DE60084F8B4 /* MatchesNavBar.swift in Sources */,
 				607E88432683E82300B45599 /* SendMessageButton.swift in Sources */,
 				604731102666081A00B02C22 /* SettingsController.swift in Sources */,
 				6038E371265596D700446A7D /* CardView.swift in Sources */,
