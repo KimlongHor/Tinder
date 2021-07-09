@@ -26,6 +26,8 @@
 		603EC615265F085600B40965 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 603EC614265F085600B40965 /* GoogleService-Info.plist */; };
 		603EC618265F10BA00B40965 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603EC617265F10BA00B40965 /* Bindable.swift */; };
 		604731102666081A00B02C22 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6047310F2666081A00B02C22 /* SettingsController.swift */; };
+		604E1878269792DE00FA1498 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E1877269792DE00FA1498 /* ChatLogController.swift */; };
+		604E187D26979F7B00FA1498 /* MessagesNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E187C26979F7B00FA1498 /* MessagesNavBar.swift */; };
 		6052F006266ACDE1007782E3 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6052F005266ACDE1007782E3 /* Firebase+Utils.swift */; };
 		6066EA792656377800C18F98 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6066EA782656377800C18F98 /* User.swift */; };
 		607E88402683D2E200B45599 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607E883F2683D2E200B45599 /* MatchView.swift */; };
@@ -64,6 +66,8 @@
 		603EC614265F085600B40965 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		603EC617265F10BA00B40965 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		6047310F2666081A00B02C22 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		604E1877269792DE00FA1498 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		604E187C26979F7B00FA1498 /* MessagesNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesNavBar.swift; sourceTree = "<group>"; };
 		6052F005266ACDE1007782E3 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
 		6066EA782656377800C18F98 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		607E883F2683D2E200B45599 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 		6001712226546F1100EC4DA3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				604E187B26979F6200FA1498 /* MatchesMessages */,
 				6001712326546F7300EC4DA3 /* HomeBottomControlsStackView.swift */,
 				600171262654736E00EC4DA3 /* TopNavigationStackView.swift */,
 				6038E370265596D600446A7D /* CardView.swift */,
@@ -159,6 +164,14 @@
 				608220EE268A8DE60084F8B4 /* MatchesNavBar.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		604E187B26979F6200FA1498 /* MatchesMessages */ = {
+			isa = PBXGroup;
+			children = (
+				604E187C26979F7B00FA1498 /* MessagesNavBar.swift */,
+			);
+			path = MatchesMessages;
 			sourceTree = "<group>";
 		};
 		6066EA772656375A00C18F98 /* Model */ = {
@@ -174,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				608220EB268A74D60084F8B4 /* MatchesMessagesController.swift */,
+				604E1877269792DE00FA1498 /* ChatLogController.swift */,
 			);
 			path = MatchesMessages;
 			sourceTree = "<group>";
@@ -351,6 +365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				604E1878269792DE00FA1498 /* ChatLogController.swift in Sources */,
 				6052F006266ACDE1007782E3 /* Firebase+Utils.swift in Sources */,
 				603A3050265C36850070C000 /* CustomTextField.swift in Sources */,
 				6098EFFA267274B1009D5AED /* LoginViewModel.swift in Sources */,
@@ -368,6 +383,7 @@
 				600171272654736E00EC4DA3 /* TopNavigationStackView.swift in Sources */,
 				6001711A2654682300EC4DA3 /* VerticalStackView.swift in Sources */,
 				600171022654678D00EC4DA3 /* AppDelegate.swift in Sources */,
+				604E187D26979F7B00FA1498 /* MessagesNavBar.swift in Sources */,
 				6090F7B226571308009159C9 /* Advertiser.swift in Sources */,
 				6098EFF42672746E009D5AED /* LoginController.swift in Sources */,
 				607E88462683ED3A00B45599 /* KeepSwipingButton.swift in Sources */,

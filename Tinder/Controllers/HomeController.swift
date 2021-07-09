@@ -15,6 +15,7 @@ extension HomeController: CardViewDelegate {
     func didRemoveCard(cardView: CardView) {
         self.topCardView?.removeFromSuperview()
         self.topCardView = self.topCardView?.nextCardView
+        self.saveSwipeToFirestore(didLike: 1)
     }
     
     func didTapMoreInfo(cardViewModel: CardViewModel) {
