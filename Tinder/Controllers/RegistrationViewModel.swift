@@ -7,6 +7,9 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseFirestore
 
 class RegistrationViewModel {
     
@@ -39,6 +42,7 @@ class RegistrationViewModel {
             }
             
             self.saveImageToFirebase(completion: completion)
+
         }
     }
     

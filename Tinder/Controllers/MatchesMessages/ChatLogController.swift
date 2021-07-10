@@ -7,64 +7,8 @@
 
 import UIKit
 import LBTATools
-
-struct Message {
-    let text: String
-    let isFromCurrentLoggedUser: Bool
-}
-
-class MessageCell: LBTAListCell<Message> {
-    
-    let textView: UITextView = {
-        let tv = UITextView()
-        tv.backgroundColor = .clear
-        tv.font = .systemFont(ofSize: 20)
-        tv.isScrollEnabled = false
-        tv.isEditable = false
-        return tv
-    }()
-    
-    let bubbleContainer = UIView(backgroundColor: .lightGray)
-    
-    override var item: Message! {
-        didSet {
-            textView.text = item.text
-            
-            if item.isFromCurrentLoggedUser {
-                // right edge
-                anchoredConstraints.trailing?.isActive = true
-                anchoredConstraints.leading?.isActive = false
-                bubbleContainer.backgroundColor = #colorLiteral(red: 0.1780910113, green: 0.8093084336, blue: 0.9512503268, alpha: 1)
-                textView.textColor = .white
-            } else {
-                // left edge
-                anchoredConstraints.trailing?.isActive = false
-                anchoredConstraints.leading?.isActive = true
-                bubbleContainer.backgroundColor = #colorLiteral(red: 0.8782195527, green: 0.8782195527, blue: 0.8782195527, alpha: 1)
-                textView.textColor = .black
-            }
-        }
-    }
-    
-    var anchoredConstraints: AnchoredConstraints!
-    
-    override func setupViews() {
-        super.setupViews()
-        addSubview(bubbleContainer)
-        
-        bubbleContainer.layer.cornerRadius = 12
-        
-        anchoredConstraints = bubbleContainer.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor)
-        anchoredConstraints.leading?.constant = 20
-        anchoredConstraints.trailing?.isActive = false
-        anchoredConstraints.trailing?.constant = -20
-        
-        bubbleContainer.widthAnchor.constraint(lessThanOrEqualToConstant: 250).isActive = true
-        
-        bubbleContainer.addSubview(textView)
-        textView.fillSuperview(padding: .init(top: 4, left: 12, bottom: 4, right: 12))
-    }
-}
+import FirebaseFirestore
+import FirebaseAuth
 
 class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionViewDelegateFlowLayout {
     
@@ -81,56 +25,56 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
     // input accessory view
     // -- start --
     
-    class CustomInputAccessoryView: UIView {
+    lazy var customInputView: CustomInputAccessoryView = {
+        let civ = CustomInputAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 50))
+        civ.sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        return civ
+    }()
+    
+    @objc fileprivate func handleSend() {
         
-        let textView = UITextView()
-        let sendButton = UIButton(title: "Send", titleColor: .black, font: .boldSystemFont(ofSize: 14), target: nil, action: nil)
-        let placeholderLabel = UILabel(text: "Enter Message", font: .systemFont(ofSize: 16),textColor: .lightGray)
+        guard let text = customInputView.textView.text else { return }
         
-        override var intrinsicContentSize: CGSize {
-            return .zero
-        }
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            backgroundColor = .white
-            setupShadow(opacity: 0.1, radius: 8, offset: .init(width: 0, height: -8), color: .lightGray)
-            autoresizingMask = .flexibleHeight
-
-            textView.isScrollEnabled = false
-            textView.font = .systemFont(ofSize: 16)
-
-            hstack(textView,
-                           sendButton.withSize(.init(width: 60, height: 60)),
-                           alignment: .center).withMargins(.init(top: 0, left: 16, bottom: 0, right: 16))
+        if text != "" {
+            guard let currentUserId = Auth.auth().currentUser?.uid else { return }
             
-            NotificationCenter.default.addObserver(self, selector: #selector(handleTextChange), name: UITextView.textDidChangeNotification, object: nil)
+            let data = ["text": text,
+                        "fromId": currentUserId,
+                        "toId": match.uid,
+                        "timestamp": Timestamp(date: Date())
+            ] as [String: Any]
             
-            addSubview(placeholderLabel)
-            placeholderLabel.anchor(top: nil, leading: leadingAnchor, bottom: nil, trailing: sendButton.leadingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 0))
-            placeholderLabel.centerYAnchor.constraint(equalTo: sendButton.centerYAnchor).isActive = true
-        }
-        
-        @objc fileprivate func handleTextChange() {
-            placeholderLabel.isHidden = textView.text.count != 0
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        deinit {
-            NotificationCenter.default.removeObserver(self)
+            let collection = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid)
+            
+            collection.addDocument(data: data) { (error) in
+                if let error = error {
+                    print("Failed to save message:", error)
+                    return
+                }
+                
+                print("Succesfully saved msg into Firestore")
+                self.customInputView.textView.text = nil
+                self.customInputView.placeholderLabel.isHidden = false
+            }
+            
+            let toCollection = Firestore.firestore().collection("matches_messages").document(match.uid).collection(currentUserId)
+            
+            toCollection.addDocument(data: data) { (error) in
+                if let error = error {
+                    print("Failed to save message:", error)
+                    return
+                }
+                
+                print("Succesfully saved msg into Firestore")
+                self.customInputView.textView.text = nil
+                self.customInputView.placeholderLabel.isHidden = false
+            }
         }
     }
     
-    lazy var redView: UIView = {
-        return CustomInputAccessoryView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 50))
-    }()
-    
     override var inputAccessoryView: UIView? {
         get {
-            return redView
+            return customInputView
         }
     }
     
@@ -143,19 +87,62 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+        
         collectionView.keyboardDismissMode = .interactive
         
         setupNavigationBar()
         
         setupUI()
         
-        items = [
-            .init(text: "In this lesson, lets cover some more abstract topics related to code architexture. Thse two topics will be View Model View State and Reactive Programming. For those that are unfamiliar with thse concepts, it will sound somewhat intimidating at first but in reality its not too complicated.", isFromCurrentLoggedUser: true),
-            .init(text: "Hey, what's up?, Hey, what's up?, Hey, what's up?, Hey, what's up?, Hey, what's up?", isFromCurrentLoggedUser: true),
-            .init(text: "Hey, what's up?", isFromCurrentLoggedUser: false),
-            .init(text: "Hey, what's up?", isFromCurrentLoggedUser: true),
-            .init(text: "In this lesson, lets cover some more abstract topics related to code architexture. Thse two topics will be View Model View State and Reactive Programming. For those that are unfamiliar with thse concepts, it will sound somewhat intimidating at first but in reality its not too complicated.", isFromCurrentLoggedUser: false)
-        ]
+        fetchMessages()
+    }
+    
+    @objc fileprivate func handleKeyboardShow() {
+        self.collectionView.scrollToItem(at: [0, items.count - 1], at: .bottom, animated: true)
+    }
+    
+    fileprivate func fetchMessages() {
+        print("Fetching messages")
+        
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        
+        let query = Firestore.firestore().collection("matches_messages").document(currentUserId).collection(match.uid).order(by: "timestamp")
+        
+        // Note: We use addSnapshotListener instead of getDocuments because we want to update collectionView whenever a new message get added to the firestore.
+        
+        // addSnapshotListener will be called whenever the data in firestore changed
+        // getDocuments will be called once only
+        
+        query.addSnapshotListener { (querySnapshot, error) in
+            if let error = error {
+                print("Failed to fetch message:", error)
+                return
+            }
+            
+            querySnapshot?.documentChanges.forEach({ (change) in
+                if change.type == .added {
+                    let dictionary = change.document.data()
+                    self.items.append(.init(dictionary: dictionary))
+                }
+            })
+            
+            self.collectionView.reloadData()
+            self.collectionView.scrollToItem(at: [0, self.items.count - 1], at: .bottom, animated: true)
+        }
+        
+//        query.getDocuments { (querySnapshot, error) in
+//            if let error = error {
+//                print("Failed to fetch message:", error)
+//                return
+//            }
+//
+//            querySnapshot?.documents.forEach({ (documentSnapshot) in
+//                self.items.append(.init(dictionary: documentSnapshot.data()))
+//            })
+//
+//            self.collectionView.reloadData()
+//        }
     }
     
     fileprivate func setupUI() {

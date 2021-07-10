@@ -80,6 +80,7 @@ class RegistrationController: UIViewController {
 
     let gradientLayer = CAGradientLayer()
     let registrationViewModel = RegistrationViewModel()
+    var delegate: LoginControllerDelegate?
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -149,6 +150,10 @@ class RegistrationController: UIViewController {
             }
             
             print("Finished registering our user")
+            
+            self.dismiss(animated: true, completion: {
+                self.delegate?.didFinishLoggingIn()
+            })
         }
     }
     
@@ -226,7 +231,10 @@ class RegistrationController: UIViewController {
     }
     
     @objc fileprivate func handleGoToLogin() {
-        self.dismiss(animated: true, completion: nil)
+        let loginController = LoginController()
+        loginController.modalPresentationStyle = .fullScreen
+        loginController.delegate = delegate
+        navigationController?.pushViewController(loginController, animated: true)
     }
     
     lazy var verticalStackView = VerticalStackView(arrangedSubviews: [

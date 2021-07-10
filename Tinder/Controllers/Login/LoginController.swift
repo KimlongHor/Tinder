@@ -156,9 +156,7 @@ class LoginController: UIViewController {
     }
     
     @objc fileprivate func handleGoBack() {
-        let registrationController = RegistrationController()
-        registrationController.modalPresentationStyle = .fullScreen
-        present(registrationController, animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc fileprivate func handleLogin() {

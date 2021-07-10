@@ -61,9 +61,9 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         super.viewDidAppear(true)
         
         if Auth.auth().currentUser == nil {
-            let loginController = LoginController()
-            loginController.delegate = self
-            let navController = UINavigationController(rootViewController: loginController)
+            let registrationController = RegistrationController()
+            registrationController.delegate = self
+            let navController = UINavigationController(rootViewController: registrationController)
             navController.modalPresentationStyle = .fullScreen
             present(navController, animated: true)
         }
@@ -98,7 +98,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
                 return
             }
             
-            guard let data = snapshot?.data() as? [String: Int] else { return }
+            let data = snapshot?.data() as? [String: Int] ?? [:]
             self.swipes = data
             self.fetchUserFromFirestore()
         }
@@ -218,7 +218,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
                 
                 guard let currentUser = self.user else { return }
                 
-                let otherMatchData = ["name": currentUser.name ?? "", "profileImageUrl": currentUser.imageUrl1 ?? "", "uid": cardUid, "timestamp": Timestamp(date: Date())] as [String : Any]
+                let otherMatchData = ["name": currentUser.name ?? "", "profileImageUrl": currentUser.imageUrl1 ?? "", "uid": currentUser.uid ?? "", "timestamp": Timestamp(date: Date())] as [String : Any]
                 
                 Firestore.firestore().collection("matches_messages").document(cardUid).collection("matches").document(uid).setData(otherMatchData) { (error) in
                     if let error = error {

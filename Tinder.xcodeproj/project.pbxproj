@@ -28,6 +28,9 @@
 		604731102666081A00B02C22 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6047310F2666081A00B02C22 /* SettingsController.swift */; };
 		604E1878269792DE00FA1498 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E1877269792DE00FA1498 /* ChatLogController.swift */; };
 		604E187D26979F7B00FA1498 /* MessagesNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E187C26979F7B00FA1498 /* MessagesNavBar.swift */; };
+		604E188026990A7500FA1498 /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E187F26990A7500FA1498 /* CustomInputAccessoryView.swift */; };
+		604E188326990AB500FA1498 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E188226990AB500FA1498 /* Message.swift */; };
+		604E188626990AFD00FA1498 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E188526990AFD00FA1498 /* MessageCell.swift */; };
 		6052F006266ACDE1007782E3 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6052F005266ACDE1007782E3 /* Firebase+Utils.swift */; };
 		6066EA792656377800C18F98 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6066EA782656377800C18F98 /* User.swift */; };
 		607E88402683D2E200B45599 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607E883F2683D2E200B45599 /* MatchView.swift */; };
@@ -68,6 +71,9 @@
 		6047310F2666081A00B02C22 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		604E1877269792DE00FA1498 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		604E187C26979F7B00FA1498 /* MessagesNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesNavBar.swift; sourceTree = "<group>"; };
+		604E187F26990A7500FA1498 /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
+		604E188226990AB500FA1498 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		604E188526990AFD00FA1498 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		6052F005266ACDE1007782E3 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
 		6066EA782656377800C18F98 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		607E883F2683D2E200B45599 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
@@ -170,6 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				604E187C26979F7B00FA1498 /* MessagesNavBar.swift */,
+				604E187F26990A7500FA1498 /* CustomInputAccessoryView.swift */,
+				604E188526990AFD00FA1498 /* MessageCell.swift */,
 			);
 			path = MatchesMessages;
 			sourceTree = "<group>";
@@ -179,6 +187,7 @@
 			children = (
 				6066EA782656377800C18F98 /* User.swift */,
 				6090F7B126571308009159C9 /* Advertiser.swift */,
+				604E188226990AB500FA1498 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -371,11 +380,14 @@
 				6098EFFA267274B1009D5AED /* LoginViewModel.swift in Sources */,
 				60C833652656E5CE004740B1 /* CardViewModel.swift in Sources */,
 				6033C21926675F0300B4068B /* SettingsCell.swift in Sources */,
+				604E188326990AB500FA1498 /* Message.swift in Sources */,
 				600171062654678D00EC4DA3 /* HomeController.swift in Sources */,
 				607E88402683D2E200B45599 /* MatchView.swift in Sources */,
 				608220EF268A8DE60084F8B4 /* MatchesNavBar.swift in Sources */,
 				607E88432683E82300B45599 /* SendMessageButton.swift in Sources */,
 				604731102666081A00B02C22 /* SettingsController.swift in Sources */,
+				604E188026990A7500FA1498 /* CustomInputAccessoryView.swift in Sources */,
+				604E188626990AFD00FA1498 /* MessageCell.swift in Sources */,
 				6038E371265596D700446A7D /* CardView.swift in Sources */,
 				6001712426546F7300EC4DA3 /* HomeBottomControlsStackView.swift in Sources */,
 				608220EC268A74D60084F8B4 /* MatchesMessagesController.swift in Sources */,
