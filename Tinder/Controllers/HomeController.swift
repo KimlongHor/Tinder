@@ -147,6 +147,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     
     @objc fileprivate func handleMessages() {
         let matchesMessagesController = MatchesMessagesController()
+        matchesMessagesController.currentUser = user
         navigationController?.pushViewController(matchesMessagesController, animated: true)
     }
     

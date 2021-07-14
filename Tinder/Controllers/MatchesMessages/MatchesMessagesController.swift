@@ -34,6 +34,7 @@ class RecentMessageCell: LBTAListCell<RecentMessage> {
     
     override var item: RecentMessage! {
         didSet {
+            print("Here ->", item)
             usernameLabel.text = item.name
             messageTextLabel.text = item.text
             userProfileImageView.sd_setImage(with: URL(string: item.profileImageUrl))
@@ -58,35 +59,41 @@ class RecentMessageCell: LBTAListCell<RecentMessage> {
 class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, RecentMessage, MatchesHeader>, UICollectionViewDelegateFlowLayout {
     
     let customNavBar = MatchesNavBar()
-
+    var currentUser: User?
+    
+    var recentMessagesDictionary = [String: RecentMessage]()
+    var listener: ListenerRegistration?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        items = [
-//            .init(text: "Some random messages that I'll use for each recent message cell", uid: "Black", name: "Big burger", profileImageUrl: "https://firebasestorage.googleapis.com/v0/b/tinder-2be8f.appspot.com/o/images%2F12CBE4B1-3376-4AF1-870F-09929E39BB73?alt=media&token=8e6733f7-56f8-4b31-814a-d0414f6269cc", timestamp: .init(date: Date())),
-//            .init(text: "Some random messages that I'll use for each recent message cell", uid: "Black", name: "Big burger", profileImageUrl: "https://firebasestorage.googleapis.com/v0/b/tinder-2be8f.appspot.com/o/images%2F12CBE4B1-3376-4AF1-870F-09929E39BB73?alt=media&token=8e6733f7-56f8-4b31-814a-d0414f6269cc", timestamp: .init(date: Date())),
-//            .init(text: "Some random messages that I'll use for each recent message cell", uid: "Black", name: "Big burger", profileImageUrl: "https://firebasestorage.googleapis.com/v0/b/tinder-2be8f.appspot.com/o/images%2F12CBE4B1-3376-4AF1-870F-09929E39BB73?alt=media&token=8e6733f7-56f8-4b31-814a-d0414f6269cc", timestamp: .init(date: Date()))
-//        ]
         setupUI()
         fetchRencentMessages()
     }
     
-    var recentMessagesDictionary = [String: RecentMessage]()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        if isMovingFromParent {
+            listener?.remove()
+        }
+    }
     
     fileprivate func fetchRencentMessages() {
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-        Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages").addSnapshotListener { (querySnaphot, error) in
+        let query = Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages")
+            
+        listener = query.addSnapshotListener { (querySnaphot, error) in
             if let error = error {
                 print("Failed to fetch recent messages", error)
                 return
             }
             
-            querySnaphot?.documentChanges.forEach({ (change) in
+             querySnaphot?.documentChanges.forEach({ (change) in
                 
                 if change.type == .added || change.type == .modified {
                     let dictionary = change.document.data()
                     let recentMessage = RecentMessage(dictionary: dictionary)
                     self.recentMessagesDictionary[recentMessage.uid] = recentMessage
+                    print("Okay->", self.recentMessagesDictionary)
                 }
             })
             
@@ -142,10 +149,25 @@ class MatchesMessagesController: LBTAListHeaderController<RecentMessageCell, Rec
     
     func didSelectMatchFromHeader(match: Match) {
         let chatLogController = ChatLogController(match: match)
+        chatLogController.currentUser = currentUser
         navigationController?.pushViewController(chatLogController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return .init(width: view.frame.width, height: 250)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let recentMessage = self.items[indexPath.item]
+        
+        let dictionary = ["name": recentMessage.name,
+                          "profileImageUrl": recentMessage.profileImageUrl,
+                          "uid": recentMessage.uid]
+        
+        let match = Match(dictionary: dictionary)
+        
+        let controller = ChatLogController(match: match)
+        controller.currentUser = currentUser
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
